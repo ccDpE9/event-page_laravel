@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Carbon\Carbon;
 
 $factory->define(App\User::class, function (Faker $faker) {
   return [
@@ -16,6 +17,7 @@ $factory->define(App\Concert::class, function (Faker $faker) {
   return [
     'title' => $faker->sentence($nbWords=3),
     'description' => $faker->sentence,
+    'date' => Carbon::parse('2019-12-01 8:00pm'),
     'ticket_price' => $faker->randomFloat(2, 1.00),
     'city' => $faker->city,
     'venue' => $faker->company,

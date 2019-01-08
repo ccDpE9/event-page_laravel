@@ -15,13 +15,4 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
-    public function create($class, $attributes = []) 
-    {
-        return factory($class)->create($attributes);
-    }
-
-    public function make($class, $attributes = [])
-    {
-        return factory($class)->make($attributes);
-    }
 }

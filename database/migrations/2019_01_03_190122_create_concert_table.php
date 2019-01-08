@@ -14,7 +14,7 @@ class CreateConcertTable extends Migration
             $table->string('title', 255);
             $table->string('description');
             $table->timestamp('date');
-            $table->integer('ticket_price');
+            $table->decimal('ticket_price', 6, 2);
             $table->string('city', 55);
             $table->string('venue', 55);
             $table->string('venue_address', 55);
