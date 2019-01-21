@@ -19,6 +19,8 @@ class CreateConcertTable extends Migration
             $table->string('venue', 55);
             $table->string('venue_address', 55);
             $table->string('additional_information', 255);
+            $table->integer('ticker_price');
+            $table->integer('ticker_quantity');
             $table->timestamps();
         });
     }

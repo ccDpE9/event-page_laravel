@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Concert extends Model
 {
 
+    public function orders()
+    {
+        return $this->hasMany(\App\Order::class);
+    }
+
     public function getConcertDateAttribute($value)
     {
         return $this->date->format('F j, Y');
