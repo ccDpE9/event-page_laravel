@@ -14,6 +14,7 @@
     "axios": "^0.18",
     "babel-preset-react": "^6.23.0",
     "bootstrap": "^4.0.0",
+    "bulma": "^0.7.2",
     "cross-env": "^5.1",
     "jquery": "^3.2",
     "laravel-mix": "^4.0.7",
@@ -23,9 +24,7 @@
     "react-dom": "^16.2.0",
     "resolve-url-loader": "^2.3.1",
     "sass": "^1.15.2",
-    "sass-loader": "^7.1.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.84.0"
+    "sass-loader": "^7.1.0"
   },
   "name": "event",
   "description": "<p align=\"center\"><img src=\"https://laravel.com/assets/img/components/logo-laravel.svg\"></p>",
