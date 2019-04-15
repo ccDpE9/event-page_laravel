@@ -12,6 +12,11 @@ class Concert extends Model
         return $this->hasMany(\App\Order::class);
     }
 
+    public function tickets()
+    {
+        return $this->hasMany(\App\Ticket::class);
+    }
+
     public function getConcertDateAttribute($value)
     {
         return $this->date->format('F j, Y');
@@ -26,4 +31,5 @@ class Concert extends Model
     {
         return number_format($this->ticket_price / 100, 2);
     }
+
 }
