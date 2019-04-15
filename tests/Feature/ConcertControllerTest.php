@@ -20,9 +20,10 @@ class ConcertControllerTest extends TestCase
     function user_can_view_concerts_list()
     {
         $this->withoutExceptionHandling();
-        $concert = factory('App\Concert')->create();
-        // @TODO: get(): returns HTTP\Response
+        $concert = create('App\Concert');
+        // @NOTE get(): returns HTTP\Response
         $response = $this->get(route('concerts.index'));
         $response->assertSee($concert->title);
     }
+
 }
