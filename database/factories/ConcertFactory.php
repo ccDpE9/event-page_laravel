@@ -22,6 +22,6 @@ $factory->define(App\Concert::class, function (Faker $faker) {
 
 // --- Concert Factory callback
 
-$factory->afterCreating(App\Concert::class, function($concert, $faker {
+$factory->afterCreating(App\Concert::class, function($concert, $faker) {
     $concert->tickets()->save(factory(App\Ticket::class, $concert->ticket_quantity)->create());
 });
