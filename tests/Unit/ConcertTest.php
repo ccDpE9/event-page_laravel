@@ -12,17 +12,13 @@ use Carbon\Carbon;
 class ConcertTest extends TestCase
 {
 
-    // use DatabaseMigrations;
+    use DatabaseMigrations;
 
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
-        $this->concert = make('App\Concert', [
-            'date' => Carbon::parse('2019-12-01 8:00pm'),
-            'ticket_price' => 3390
-        ]);
+        $this->concert = create('App\Concert');
     }
-
 
     /** @test */
     function date_is_formatted()
@@ -41,4 +37,17 @@ class ConcertTest extends TestCase
     {
         $this->assertEquals('33.90', $this->concert->ticket_price_in_euros);
     }
+
+    /** @test */
+    function can_add_tickets()
+    {
+        // I could use factories to make tickets, with concert_id
+        // Having a method on Concert model, that generates tickets, is better approach, because it'll be used to create actual tickets in controllers
+        $concert = create('App\Concert');
+
+        // $concert->generateTickets(10);
+
+        // assert there is 50 tickets in the DB
+    }
 }
+
