@@ -1,8 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from "react";
 
-import '../sass/app.scss';
+class App extends Component {
+};
 
-import App from './components/App';
-
-ReactDOM.render(<App />, document.querySelector('.container'));
+export default App;
