@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Concert extends Model
 {
@@ -17,18 +18,29 @@ class Concert extends Model
         return $this->hasMany(\App\Ticket::class);
     }
 
-    public function getConcertDateAttribute($value)
+    public function getDateAttribute($value)
     {
-        return $this->date->format('F j, Y');
+        // --- Getter: remove hours part
+        return Carbon::parse($value)->format('F j, Y');
     }
 
     public function getStartTimeAttribute($value)
     {
-        return $this->date->format('g:ia');
+        // --- Getter: remove last two 0s
+        return Carbon::parse($value)->format('H:i');
+    }
+
+    public function getEndTimeAttribute($value)
+    {
+        // --- Getter: remove last two 0s
+        return Carbon::parse($value)->format('H:i');
     }
 
     public function getTicketPriceInEurosAttribute($value)
     {
+        // --- Get ticket_price attribute in specific currency
+        // @TODO use switch to make the method more dynamic (DOLLARS, EUROS, ETC)
+        // @TODO value is saved to the database in euros
         return number_format($this->ticket_price / 100, 2);
     }
 
