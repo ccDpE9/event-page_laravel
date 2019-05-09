@@ -8,7 +8,7 @@ $factory->define(App\Concert::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence($nbWords=3),
         'description' => $faker->sentence,
-        'date' => Carbon::parse('2019-12-01'),
+        'date' => '2019-01-01',
         'start_time' => '20:00:00',
         'end_time' => '22:00:00',
         'city' => $faker->city,
@@ -16,7 +16,8 @@ $factory->define(App\Concert::class, function (Faker $faker) {
         'venue_address' => $faker->streetAddress,
         'additional_information' => $faker->streetAddress,
         'ticket_price' => $faker->randomFloat(2, 1.00),
-        'ticket_quantity' => 100
+        'tickets_quantity' => 100,
+        'tickets_left' => 100
     ];
 });
 
