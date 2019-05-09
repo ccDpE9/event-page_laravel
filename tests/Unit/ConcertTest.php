@@ -14,7 +14,7 @@ class ConcertTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->concert = create('App\Concert');
@@ -23,31 +23,20 @@ class ConcertTest extends TestCase
     /** @test */
     function date_is_formatted()
     {
-        $this->assertEquals('December 1, 2019', $this->concert->concertDate);
+        return $this->assertEquals('January 1, 2019', $this->concert->date);
     }
 
     /** @test */
     function start_time_is_formatted()
     {
-        $this->assertEquals('8:00pm', $this->concert->startTime);
+        $this->assertEquals("20:00", $this->concert->start_time);
     }
 
     /** @test */
-    function ticket_price_is_in_euros()
+    function end_time_is_formatted()
     {
-        $this->assertEquals('33.90', $this->concert->ticket_price_in_euros);
+        $this->assertEquals("22:00", $this->concert->end_time);
     }
 
-    /** @test */
-    function can_add_tickets()
-    {
-        // I could use factories to make tickets, with concert_id
-        // Having a method on Concert model, that generates tickets, is better approach, because it'll be used to create actual tickets in controllers
-        $concert = create('App\Concert');
-
-        // $concert->generateTickets(10);
-
-        // assert there is 50 tickets in the DB
-    }
 }
 
