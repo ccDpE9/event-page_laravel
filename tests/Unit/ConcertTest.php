@@ -14,12 +14,6 @@ class ConcertTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->concert = create('App\Concert');
-    }
-
     /** @test */
     function date_is_formatted()
     {
