@@ -17,20 +17,18 @@ class ConcertTest extends TestCase
     /** @test */
     public function a_concert_has_many_tickets()
     {
-        // 1. *Make* tickets - unit tests should not hit the DB
-        /*
-        $concert = make("App\Concert", [
-        ]);
-        make("App\Ticket", [
-            "concert_id" => %this->concert->id
-        ]);
+        // 1. Unit tests should not hit the DB
+        $concert = make("App\Concert", [ "id" => 1 ]);
+        make("App\Ticket", [ "concert_id" => $concert->id ]);
+        // 2. Concert has many tickets
+        $this->assertInstanceOf(
+            "Illuminate\Database\Eloquent\Collection",
+            $concert->tickets
+        );
         $this->assertInstanceOf(
             "App\Ticket",
-            $this->concert->tickets()
+            $concert->tickets()->first()
         );
-         */
-        $concert = make("App\Concert");
-        dd($concert);
     }
 
     /** @test */
