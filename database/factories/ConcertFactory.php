@@ -21,16 +21,33 @@ $factory->define(App\Concert::class, function (Faker $faker) {
     ];
 });
 
+/*
+$factory
+    ->state(App\Concert::class, "with_tickets", [])
+    ->afterCreatingState(App\Concert::class, "with_tickets", function($user, $faker) {
+        factory(App\Ticket::class, $concert->ticket_quantity)->create([
+            "concert_id" => $concert->id,
+        ]);
+    });
 
-// --- Concert Factory callback
+$factory
+    ->state(App\Concert::class, "with_tickets", [])
+    ->afterMakingState(App\Concert::class, "with_tickets", function($user, $faker) {
+        factory(App\Ticket::class, $concert->ticket_quantity)->make([
+            "concert_id" => $concert->id,
+        ]);
+    });
+*/
 
-$factory->afterCreating(App\Concert::class, function($concert, $faker) {
-    $concert->tickets()->save(factory(App\Ticket::class)->make());
+$factory->afterMaking(App\Concert::class, function($concert, $faker) {
+    $ticket = factory(App\Ticket::class)->make([
+        "concert_id" => $concert->id
+    ]);
 });
 
 
-$factory->define(App\Ticket::class, function ($concert_id) {
+$factory->define(App\Ticket::class, function (Faker $faker) {
     return [
-       'concert_id' => $concert_id
+        "concert_id" => 1
     ];
 });

@@ -9,9 +9,10 @@ class CheckoutForm extends Component {
       ticketQuantity: null
     };
     
+    this.handleSubmit = this.handleSubmit.bind(this);
   };
 
-  handleSubmit = async e => {
+  async handleSubmit(e) {
     e.preventDefault();
 
     try {
@@ -27,7 +28,7 @@ class CheckoutForm extends Component {
         method: "POST",
         headers: { "Content-type": "application/json" },
         // @TODO pass ticketQuantity to server
-        body: JSON.stringify({ token.id })
+        body: JSON.stringify({ token })
       })
         .then(res => {
           // --- 1. Clear input

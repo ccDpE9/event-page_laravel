@@ -15,6 +15,25 @@ class ConcertTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    public function a_concert_has_many_tickets()
+    {
+        // 1. *Make* tickets - unit tests should not hit the DB
+        /*
+        $concert = make("App\Concert", [
+        ]);
+        make("App\Ticket", [
+            "concert_id" => %this->concert->id
+        ]);
+        $this->assertInstanceOf(
+            "App\Ticket",
+            $this->concert->tickets()
+        );
+         */
+        $concert = make("App\Concert");
+        dd($concert);
+    }
+
+    /** @test */
     function date_is_formatted()
     {
         return $this->assertEquals('January 1, 2019', $this->concert->date);
