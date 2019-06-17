@@ -24,5 +24,18 @@ class CreateConcertTest extends TestCase
         // --- 2. Assert error is auth() middleware related
             ->assertRedirect(route("login")); 
     }
+
+    /** @test */
+    public function authenticated_unauthorized_user_cannot_create_a_concert()
+    {
+        $user = factory(User::class)->create([
+            "admin" => false
+        ]);
+
+        $response = $this->actingAs($user)->post(route("concerts.store"), [
+        ]);
+
+        $response->assertStatus(403);
+    }
 }
 

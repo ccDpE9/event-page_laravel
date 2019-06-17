@@ -17,6 +17,32 @@ class ConcertControllerTest extends TestCase
     }
 
     /** @test */
+    public function unauthorized_user_cannot_create_a_concert()
+    {
+    }
+
+    /** @test */
+    public function unauthorized_user_cannot_update_a_concert()
+    {
+    }
+
+    /** @test */
+    public function unauthorized_user_cannot_delete_a_concert()
+    {
+    }
+
+    /** @test */
+    public function authorized_user_can_create_a_concert()
+    {
+        $attributes = [
+        ];
+
+        $this->post("/concerts", $attributes);
+
+        $this->assertDatabaseHas("concerts", $attributes);
+    }
+
+    /** @test */
     function user_can_view_concerts_list()
     {
         $this->withoutExceptionHandling();
