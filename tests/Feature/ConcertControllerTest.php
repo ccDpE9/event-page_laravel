@@ -11,14 +11,38 @@ class ConcertControllerTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
+    // --- READ
+    
     /** @test */
-    public function unauthorized_user_cannot_create_a_concert()
+    public function user_can_view_index_page()
     {
+        $this->get(route("concerts.index"))
+            ->assertStatus(200);
+    }
+
+    /** @test */
+    public function user_can_view_concerts()
+    {
+        $concertOne = create("App\Concert");
+        $concertTwo = create("App\Concert");
+        $response = $this->get(route("concerts.index"));
+        $response->assertStatus(200);
+        $response->assertSee($concertOne->name);
+        $response->assertSee($concertTwo->name);
+    }
+
+
+    // --- CREATE
+    
+    /** @test */
+    public function unverified_user_cannot_create_a_concert()
+    {
+        $user = create("App\User", $state = "Unverified");
     }
 
     /** @test */
@@ -40,16 +64,6 @@ class ConcertControllerTest extends TestCase
         $this->post("/concerts", $attributes);
 
         $this->assertDatabaseHas("concerts", $attributes);
-    }
-
-    /** @test */
-    function user_can_view_concerts_list()
-    {
-        $this->withoutExceptionHandling();
-        $concert = create('App\Concert');
-        //$response = $this->get(route('concerts.index'));
-        //$response->assertSee($concert->title);
-        $concert->tickets->assertEqual($concert->ticket_quantity);
     }
 
     /** @test */
