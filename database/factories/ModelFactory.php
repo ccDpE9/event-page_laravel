@@ -54,17 +54,32 @@ $factory->define(App\User::class, function (Faker $faker) {
         'name' => $faker->userName,
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'role_id' => 3,
         'remember_token' => str_random(10),
     ];
 });
 
 
+$factory->define(App\User::class, "Admin", [
+    "role_id" => function() {
+        return App\Role::where("name", "Admin")->get()
+    }
+]);
+
+$factory->define(App\User::class, "User", [
+    "role_id" => function() {
+        return App\Role::where("name", "User")->get()
+    }
+]);
+
+$factory->define(App\User::class, "Unverified", [
+    "role_id" => function() {
+        return App\Role::where("name", "Uneverified")->get()
+    }
+]);
+
 // --- Concert Factory
 $factory->define(App\Concert::class, function (Faker $faker) {
-    $id = 1;
     return [
-        'id' => $id++,
         'title' => $faker->sentence($nbWords=3),
         'description' => $faker->sentence,
         'date' => '2019-01-01',
@@ -80,17 +95,13 @@ $factory->define(App\Concert::class, function (Faker $faker) {
     ];
 });
 
-// --- Concert make() closure
-$factory->afterMaking(App\Concert::class, function($concert, $faker) {
-    $concert->tickets()->saveMany(factory(App\Ticket::class, $concert->tickets_quantity)->make([
-        "concert_id" => $concert->id,
-    ]));
-});
-
 
 // --- Ticket Factory
-$factory->define(App\Ticket::class, function (Faker $faker, $id) {
+$factory->define(App\Concert::class, function (Faker $faker) {
     return [
-        "concert_id" => $id["concert_id"],
+        "order_id" => Null,
+        "concert_id" => function() {
+            return factory("App\Concert")->create()->id;
+        },
     ];
 });
