@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\Schema;
 
+use App\Concert;
+use App\Observers\ConcertObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -16,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Concert::observe(ConcertObserver::class);
     }
 
     /**
