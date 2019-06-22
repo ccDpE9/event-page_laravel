@@ -20,9 +20,8 @@ class CreateConcertTable extends Migration
             $table->string('venue', 55);
             $table->string('venue_address', 55);
             $table->string('additional_information', 255);
-            $table->decimal('ticket_price', 6, 2);
-            $table->integer('tickets_quantity');
-            $table->integer('tickets_left');
+            $table->unsignedDecimal('ticket_price', 6, 2);
+            $table->unsignedInteger('tickets_quantity');
             $table->timestamps();
         });
     }
