@@ -30,10 +30,13 @@ class ConcertControllerTest extends TestCase
     {
         $concertOne = create("App\Concert");
         $concertTwo = create("App\Concert");
-        $response = $this->get(route("concerts.index"));
-        $response->assertStatus(200);
-        $response->assertSee($concertOne->name);
-        $response->assertSee($concertTwo->name);
+        $response = $this->json("GET", route("concerts.index"));
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                "title" => $concertOne->title,
+                "description" => $concertTwo->description
+            ]);
     }
 
 
