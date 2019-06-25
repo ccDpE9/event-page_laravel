@@ -72,5 +72,34 @@ class ConcertTest extends TestCase
         // --- 1. Login as authorized user
     }
 
+    /** @test */
+    public function return_ordered_upcoming_concerts_only()
+    {
+        // --- Create concerts
+        $upcomingConcertOne = create("App\Concert", [
+            "date" => Carbon::parse("2019-06-26")
+        ]);
+        $upcomingConcertTwo = create("App\Concert", [
+            "date" => Carbon::parse("2019-06-27")
+        ]);
+        $formerConcert = create("App\Concert", [
+            "date" => Carbon::parse("2019-05-01")
+        ]);
+
+        // --- Call the local scope method
+        $result = \App\Concert::upcoming()->get();
+
+        // --- Assert that only upcoming concerts are returned
+        $this->assertTrue(
+            !$result->contains($formerConcert)
+        );
+
+        // --- Assert that upcoming concerts are propertly ordered
+        $this->assertEquals(
+            $upcomingConcertOne->title,
+            $result->first()->title
+        );
+    }
+
 }
 

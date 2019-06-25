@@ -44,4 +44,11 @@ class Concert extends Model
         return number_format($this->ticket_price / 100, 2);
     }
 
+    public function scopeUpcoming($query, $take=3)
+    {
+        return $query
+            ->where("date", ">", Carbon::now())
+            ->orderBy("date", "asc");
+    }
+
 }
