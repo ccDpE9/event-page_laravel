@@ -60,8 +60,10 @@ class ConcertControllerTest extends TestCase
     /** @test */
     public function old_concerts_are_not_displayed()
     {
-        // 1. Create a concert that has "date" column < today
-        // 2. Assert it's not displayed
+        $concert = create("App\Concert", ["date" => "2018-01-02"]);
+        $this
+            ->json("GET", "/api/concerts")
+            ->assertJsonMissing($concert->toArray());
     }
 
     // --- CREATE
