@@ -16,32 +16,56 @@ class ConcertControllerTest extends TestCase
         parent::setUp();
     }
 
-    // --- READ
+    // --- CREATE
     
+    // --- READ
+
     /** @test */
     public function user_can_view_index_page()
     {
         $this->get(route("concerts.index"))
-            ->assertStatus(200);
+             ->assertStatus(200);
     }
 
     /** @test */
     public function user_can_view_concerts()
     {
-        $concertOne = create("App\Concert");
-        $concertTwo = create("App\Concert");
-        $response = $this->json("GET", route("concerts.index"));
-        $response
+        $concertOne = create("App\Concert", ["date" => "2019-07-07"]);
+        $concertTwo = create("App\Concert", ["date" => "2019-07-07"]);
+        $this
+            ->json("GET", "/api/concerts")
             ->assertStatus(200)
+            ->assertJsonStructure([
+                "data" => [
+                    [
+                        "title",
+                        "description", 
+                        "date", 
+                        "start_time", 
+                        "end_time",
+                        "city",
+                        "venue",
+                        "venue_address",
+                        "ticket_price",
+                        "tickets_quantity", 
+                    ]
+                ],
+            ])
             ->assertJsonFragment([
                 "title" => $concertOne->title,
-                "description" => $concertTwo->description
+                "title" => $concertOne->title
             ]);
     }
 
+    /** @test */
+    public function old_concerts_are_not_displayed()
+    {
+        // 1. Create a concert that has "date" column < today
+        // 2. Assert it's not displayed
+    }
 
     // --- CREATE
-    
+
     /** @test */
     public function unverified_user_cannot_create_a_concert()
     {
