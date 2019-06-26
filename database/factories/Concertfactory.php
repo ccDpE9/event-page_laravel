@@ -6,7 +6,7 @@ $factory->define(App\Concert::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence($nbWords=3),
         'description' => $faker->sentence,
-        'date' => '2050-01-01',
+        'date' => $faker->date,
         'start_time' => '20:00:00',
         'end_time' => '22:00:00',
         'city' => $faker->city,
