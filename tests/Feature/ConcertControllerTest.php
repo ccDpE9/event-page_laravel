@@ -17,7 +17,23 @@ class ConcertControllerTest extends TestCase
     }
 
     // --- CREATE
-    
+
+    /** @test */
+    public function fields_are_stored_as_specified()
+    {
+
+        $concert = create("App\Concert");
+
+        $mapFields = array(); 
+
+        foreach($concertOne->toArray() as $field) {
+            $arr[$field] = $concert->{$field};
+        }
+
+        $response->assertJsonFragment($mapFields);
+    }
+
+
     // --- READ
 
     /** @test */
@@ -30,31 +46,26 @@ class ConcertControllerTest extends TestCase
     /** @test */
     public function user_can_view_concerts()
     {
-        $concertOne = create("App\Concert", ["date" => "2019-07-07"]);
-        $concertTwo = create("App\Concert", ["date" => "2019-07-07"]);
-        $this
-            ->json("GET", "/api/concerts")
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                "data" => [
-                    [
-                        "title",
-                        "description", 
-                        "date", 
-                        "start_time", 
-                        "end_time",
-                        "city",
-                        "venue",
-                        "venue_address",
-                        "ticket_price",
-                        "tickets_quantity", 
-                    ]
-                ],
-            ])
-            ->assertJsonFragment([
-                "title" => $concertOne->title,
-                "title" => $concertOne->title
-            ]);
+        create("App\Concert", [], 2);
+
+        $this->json("GET", "/api/concerts")
+             ->assertStatus(200)
+             ->assertJsonStructure([
+                 "data" => [
+                     [
+                         "title",
+                         "description", 
+                         "date", 
+                         "start_time", 
+                         "end_time",
+                         "city",
+                         "venue",
+                         "venue_address",
+                         "ticket_price",
+                         "tickets_quantity", 
+                     ]
+                 ],
+             ]);
     }
 
     /** @test */
@@ -64,45 +75,6 @@ class ConcertControllerTest extends TestCase
         $this
             ->json("GET", "/api/concerts")
             ->assertJsonMissing($concert->toArray());
-    }
-
-    // --- CREATE
-
-    /** @test */
-    public function unverified_user_cannot_create_a_concert()
-    {
-        $user = create("App\User", $state = "Unverified");
-    }
-
-    /** @test */
-    public function unauthorized_user_cannot_update_a_concert()
-    {
-    }
-
-    /** @test */
-    public function unauthorized_user_cannot_delete_a_concert()
-    {
-    }
-
-    /** @test */
-    public function authorized_user_can_create_a_concert()
-    {
-        $attributes = [
-        ];
-
-        $this->post("/concerts", $attributes);
-
-        $this->assertDatabaseHas("concerts", $attributes);
-    }
-
-    /** @test */
-    function correct_number_of_tickets_is_created_upon_concert_creation()
-    {
-        /* The reason why this is not Unit test is because it does not test a functionallity in isolation, but the interaction between two models */
-
-        // 1. It should make as many Ticket objects as it's defined in $concert->ticket_quantity
-        // 2. Ticket object should have $ticket->order_id = Null
-        // 3. Ticket object should have $ticket->concert_id = $this->id
     }
 
 }
