@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
+use Illuminate\Support\Facades\Event;
+use App\Observers\ConcertObserver;
+
 use Carbon\Carbon;
 
 class ConcertTest extends TestCase
@@ -50,30 +53,7 @@ class ConcertTest extends TestCase
     }
 
     /** @test */
-    public function unauthorized_users_cant_create_or_modify_concerts()
-    {
-    }
-
-    /** @test */
-    public function increasing_tickets_quantity_attribute_adds_equal_number_of_tickets()
-    {
-        // --- 1. Login as authorized user
-    }
-
-    /** @test */
-    public function decreasing_tickets_quantity_attribute_removes_equal_number_of_tickets()
-        // --- 1. Login as authorized user
-    {
-    }
-
-    /** @test */
-    public function tickets_price_attribute_can_be_updated()
-    {
-        // --- 1. Login as authorized user
-    }
-
-    /** @test */
-    public function return_ordered_upcoming_concerts_only()
+    public function upcoming_scope_returns_future_ordered_concerts()
     {
         // --- Create concerts
         $upcomingConcertOne = create("App\Concert", [
@@ -101,5 +81,34 @@ class ConcertTest extends TestCase
         );
     }
 
+    /** @test */
+    public function saved_event_creates_appropriate_number_of_tickets()
+    {
+        Event::fake("eloquent.saved: ". \App\Concert::class);
+        $concert = create("App\Concert");
+        Event::assertDispatched("eloquent.saved: ". \App\Concert::class);
+    }
+
+    /** @test */
+    public function eloquent_event_creates_appropriate_number_of_tickets()
+    {
+        $concert = create("App\Concert");
+        $this->assertEquals(
+            $concert->tickets()->count(),
+            $concert->tickets_quantity
+        );
+    }
+
+    /** @test */
+    public function updated_event_creates_appropriate_number_of_tickets_only_if_tickets_quantity_field_is_updated()
+    {
+        // @TODO: Create update observer
+    }
+
+    /** @test */
+    public function updated_event_removes_appropriate_number_of_tickets_only_if_tickets_quantity_field_is_updated()
+    {
+        // @TODO: Create update observer
+    }
 }
 
