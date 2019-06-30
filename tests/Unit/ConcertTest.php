@@ -8,8 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Illuminate\Support\Facades\Event;
-use App\Observers\ConcertObserver;
-
 use Carbon\Carbon;
 
 class ConcertTest extends TestCase
@@ -18,12 +16,9 @@ class ConcertTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function a_concert_has_many_tickets()
+    public function concert_has_many_tickets()
     {
-        // 1. Unit tests should not hit the DB
-        $concert = make("App\Concert", [ "id" => 1 ]);
-        make("App\Ticket", [ "concert_id" => $concert->id ]);
-        // 2. Concert has many tickets
+        $concert = factory("App\Concert")->create();
         $this->assertInstanceOf(
             "Illuminate\Database\Eloquent\Collection",
             $concert->tickets
@@ -37,47 +32,36 @@ class ConcertTest extends TestCase
     /** @test */
     public function date_is_formatted()
     {
-        return $this->assertEquals('January 1, 2019', $this->concert->date);
+        $concert = factory("App\Concert")->create(["date" => "2019-01-01"]);
+        return $this->assertEquals('January 1, 2019', $concert->date);
     }
 
     /** @test */
     public function start_time_is_formatted()
     {
-        $this->assertEquals("20:00", $this->concert->start_time);
+        $concert = factory("App\Concert")->create(["start_time" => "20:00"]);
+        $this->assertEquals("20:00", $concert->start_time);
     }
 
     /** @test */
     public function end_time_is_formatted()
     {
-        $this->assertEquals("22:00", $this->concert->end_time);
+        $concert = factory("App\Concert")->create(["end_time" => "22:00"]);
+        $this->assertEquals("22:00", $concert->end_time);
     }
 
     /** @test */
-    public function upcoming_scope_returns_future_ordered_concerts()
+    public function upcoming_scope_returns_future_concerts()
     {
-        // --- Create concerts
-        $upcomingConcertOne = create("App\Concert", [
-            "date" => Carbon::parse("2019-06-26")
-        ]);
-        $upcomingConcertTwo = create("App\Concert", [
-            "date" => Carbon::parse("2019-06-27")
-        ]);
-        $formerConcert = create("App\Concert", [
+        factory("App\Concert", 2)->create();
+        $formerConcert = factory("App\Concert")->create([
             "date" => Carbon::parse("2019-05-01")
         ]);
 
-        // --- Call the local scope method
         $result = \App\Concert::upcoming()->get();
 
-        // --- Assert that only upcoming concerts are returned
         $this->assertTrue(
             !$result->contains($formerConcert)
-        );
-
-        // --- Assert that upcoming concerts are propertly ordered
-        $this->assertEquals(
-            $upcomingConcertOne->title,
-            $result->first()->title
         );
     }
 
@@ -85,14 +69,14 @@ class ConcertTest extends TestCase
     public function saved_event_creates_appropriate_number_of_tickets()
     {
         Event::fake("eloquent.saved: ". \App\Concert::class);
-        $concert = create("App\Concert");
+        $concert = factory("App\Concert")->create();
         Event::assertDispatched("eloquent.saved: ". \App\Concert::class);
     }
 
     /** @test */
     public function eloquent_event_creates_appropriate_number_of_tickets()
     {
-        $concert = create("App\Concert");
+        $concert = factory("App\Concert")->create();
         $this->assertEquals(
             $concert->tickets()->count(),
             $concert->tickets_quantity
