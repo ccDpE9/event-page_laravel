@@ -12,8 +12,6 @@ class Concert extends Model
         "title", "description", "date", "start_time", "end_time", "city", "venue", "venue_address", "ticket_price", "tickets_quantity"
     ];
 
-    protected $protected = ["id", "created_at", "updated_at"];
-
     public function orders()
     {
         return $this->hasMany(\App\Order::class);
