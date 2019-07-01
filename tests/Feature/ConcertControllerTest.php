@@ -16,7 +16,37 @@ class ConcertControllerTest extends TestCase
         parent::setUp();
     }
 
+
     // --- CREATE
+
+    /** @test */
+    public function fillable_fields_can_be_stored()
+    {
+        // - Tests mass asignment and fillable property
+        // - Basically tests whether the store() method works when everything is as expected
+        $concert = factory("App\Concert")->make()->toArray();
+        $concert["title"] = "Testing title";
+        $this->call("POST", route("concerts.store"), $concert);
+        $this->assertDatabaseHas("concerts", $concert);
+    }
+
+    /** @test */
+    public function guarded_fields_can_be_stored() 
+    {
+    
+    }
+
+    /** @test */
+    public function test_required_fields()
+    {
+        $concert = factory("App\Concert")->create([
+            "title" => "",
+        ]);
+
+        $this-->assertSessionHasErrors([
+            "title"
+        ]);
+    }
 
     /** @test */
     public function fields_are_stored_as_specified()
@@ -31,6 +61,12 @@ class ConcertControllerTest extends TestCase
         }
 
         $response->assertJsonFragment($mapFields);
+    }
+
+    /** @test */
+    public function newly_created_concert_is_returned()
+    {
+        // assertJsonStructure
     }
 
 
@@ -75,6 +111,19 @@ class ConcertControllerTest extends TestCase
         $this
             ->json("GET", "/api/concerts")
             ->assertJsonMissing($concert->toArray());
+    }
+
+
+    // --- UPDATE
+
+    /** @test */
+    public function fillable_fields_can_be_updated()
+    {
+    }
+
+    /** @test */
+    public function guarded_fields_cant_be_updated()
+    {
     }
 
 }
