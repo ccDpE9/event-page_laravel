@@ -12,6 +12,22 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         // $this->artisan('db:seed --class=RoleTableSeeder');
+        
+        // - Argument for assertJsonStructure()
+        $this->responseJsonStructure = [
+            "data" => [
+                "title",
+                "description", 
+                "date", 
+                "start_time", 
+                "end_time",
+                "city",
+                "venue",
+                "venue_address",
+                "ticket_price",
+                "tickets_quantity", 
+            ]
+        ];
     }
 
     protected function signIn($user=null)
