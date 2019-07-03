@@ -66,11 +66,11 @@ class ConcertTest extends TestCase
     }
 
     /** @test */
-    public function saved_event_creates_appropriate_number_of_tickets()
+    public function created_event_fires_up_when_new_concert_is_created()
     {
-        Event::fake("eloquent.saved: ". \App\Concert::class);
+        Event::fake("eloquent.created: ". \App\Concert::class);
         $concert = factory("App\Concert")->create();
-        Event::assertDispatched("eloquent.saved: ". \App\Concert::class);
+        Event::assertDispatched("eloquent.created: ". \App\Concert::class);
     }
 
     /** @test */
