@@ -7,7 +7,7 @@ use App\Ticket;
 
 class ConcertObserver
 {
-    public function saved(Concert $concert)
+    public function created(Concert $concert)
     {
         $tickets = [];
 
