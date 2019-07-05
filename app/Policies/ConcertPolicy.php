@@ -9,32 +9,32 @@ class ConcertPolicy
 {
     use HandlesAuthorization;
 
-    public function view(User $user)
+    public function before(User $user, $ability)
     {
-        Gate::define("read-concert", function($user) {
-            return $user->hasAccess(["read-concert"]);
-        });
+        if ($user->isAdmin()) {
+            return true;
+        }
     }
 
     public function create(User $user)
     {
-        Gate::define("create-concert", function($user) {
-            return $user->hasAccess(["create-concert"]);
-        });
+        if ($user->is_admin) {
+            return true;
+        }
     }
 
     public function update(User $user)
     {
-        Gate::define("update-concert", function($user) {
-            return $user->hasAccess(["update-concert"]);
-        });
+        if ($user->is_admin) {
+            return true;
+        }
     }
 
     public function delete(User $user)
     {
-        Gate::define("delete-concert", function($user) {
-            return $user->hasAccess(["delete-concert"]);
-        });
+        if ($user->is_admin) {
+            return true;
+        }
     }
 
 }
