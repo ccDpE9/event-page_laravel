@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const ROOT_USER_TYPE = "root";
+    const ADMIN_USER_TYPE = "admin";
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -18,5 +21,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isRoot()
+    {
+        return $this->type === self::ROOT_USER_TYPE;
+    }
 
 }
