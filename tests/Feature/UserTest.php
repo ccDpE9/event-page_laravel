@@ -43,7 +43,6 @@ class UserTest extends TestCase
     /** @test */
     public function unauth_user_cannot_create_new_user()
     {
-        $this->withoutExceptionHandling();
         $this
             ->json("POST", route("register"), [
                 "email" => "test@email.com",
@@ -51,7 +50,7 @@ class UserTest extends TestCase
                 "password" => "testpass",
                 "password_confirm" => "testpass"
             ])
-            ->assertForbidden();
+            ->assertStatus(401);
     }
 
     /** @test */
@@ -71,6 +70,7 @@ class UserTest extends TestCase
                 "password" => "test",
                 "password_confirmation" => "test"
             ])
+            ->assertStatus(401)
             ->assertJsonFragment([
                 "data" => "Unauthorized action.",
             ]);
