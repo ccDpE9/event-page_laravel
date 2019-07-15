@@ -44,7 +44,7 @@ class UserTest extends TestCase
     public function unauth_user_cannot_create_new_user()
     {
         $this
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "email" => "test@email.com",
                 "name" => "test",
                 "password" => "testpass",
@@ -64,13 +64,13 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "name" => "test",
                 "email" => "valid@email.com",
                 "password" => "test",
                 "password_confirmation" => "test"
             ])
-            ->assertStatus(401)
+            ->assertStatus(403)
             ->assertJsonFragment([
                 "data" => "Unauthorized action.",
             ]);
@@ -87,7 +87,7 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "name" => "testusername",
                 "email" => "valid@email.com",
                 "password" => "testpassw",
@@ -108,7 +108,7 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "email" => "validtwo@email.com",
                 "password" => "testingyz",
                 "password_confirmation" => "testingyz"
@@ -129,7 +129,7 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "name" => "userone",
                 "password" => "testingyz",
                 "password_confirmation" => "testingyz"
@@ -150,7 +150,7 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "name" => "userone",
                 "email" => "justanemail@email.com",
             ])
@@ -170,7 +170,7 @@ class UserTest extends TestCase
                 "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
-            ->json("POST", route("register"), [
+            ->json("POST", route("user.create"), [
                 "name" => "userone",
                 "email" => "justanemail@email.com",
                 "password" => "testypass",
@@ -192,7 +192,7 @@ class UserTest extends TestCase
                  "Authorization" => "Bearer ".$token,
                  "Accept" => "application/json",
              ])
-             ->json("POST", route("register"), [
+             ->json("POST", route("user.create"), [
                  "name" => "newadmin",
                  "email" => "justanemail@email.com",
                  "password" => "onetwoayy",

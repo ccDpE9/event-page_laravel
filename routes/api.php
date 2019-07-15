@@ -10,13 +10,14 @@ Route::namespace("Api")->group(function () {
 Route::group([
     "prefix" => "auth"
 ], function () {
-    Route::post("login", "Api\UserController@authenticate")->name("login");
+    Route::post("login", "Api\AuthController@authenticate")->name("login");
     Route::group([
         "middleware" => "auth.jwt"
     ], function() {
-        Route::post("register", "Api\UserController@create")->name("register")->middleware("isRoot");
-        Route::get("logout", "Api\UserController@logout");
-        Route::get("user", "Api\UserController@getAuthUser");
+        Route::post("register", "Api\UserController@create")->name("user.create")->middleware("isRoot");
+        Route::post("update", "Api\UserController@update")->name("user.update");
+        Route::get("logout", "Api\AuthController@logout")->name("logout");
+        Route::get("user", "Api\AuthController@getAuthUser");
     });
 });
 
