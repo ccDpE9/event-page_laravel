@@ -41,6 +41,20 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function unauth_user_cannot_create_new_user()
+    {
+        $this->withoutExceptionHandling();
+        $this
+            ->json("POST", route("register"), [
+                "email" => "test@email.com",
+                "name" => "test",
+                "password" => "testpass",
+                "password_confirm" => "testpass"
+            ])
+            ->assertForbidden();
+    }
+
+    /** @test */
     public function admin_user_cannot_create_new_user()
     {
         $token = $this->authenticate($this->admin);
@@ -167,6 +181,28 @@ class UserTest extends TestCase
     }
 
 
+    /** @test */
+    public function success_message_is_returned_after_the_complete_registration()
+    {
+        $token = $this->authenticate($this->root);
+
+        $this
+            ->actingAs($this->root, "api")
+             ->withHeaders([
+                 "Authorization" => "Bearer ".$token,
+                 "Accept" => "application/json",
+             ])
+             ->json("POST", route("register"), [
+                 "name" => "newadmin",
+                 "email" => "justanemail@email.com",
+                 "password" => "onetwoayy",
+                 "password_confirmation" => "onetwoayy",
+             ])
+             ->assertJsonFragment([
+                 "message" => "User was created successfully."
+             ]);
+    }
+
     // --- LOGIN
 
     /** @test */
@@ -222,5 +258,19 @@ class UserTest extends TestCase
             ->assertJsonFragment([
                 "message" => "User logged out successfully."
             ]);
+    }
+
+    // --- UPDATE
+
+    /** @test */
+    public function admin_can_update_its_details()
+    {
+    }
+
+
+    // --- DELETE
+    /** @test */
+    public function admin_can_delete_its_profile()
+    {
     }
 }

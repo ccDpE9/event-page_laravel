@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\RegisterAuthRequest;
+use App\Http\Requests\LoginRequest;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +12,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-    public function authenticate(Request $request)
+    public function authenticate(LoginRequest $request)
     {
         $creds = $request->only("email", "password");
 
@@ -38,17 +39,15 @@ class UserController extends Controller
         ]);
 
         return response()->json([
-            "success" => true,
+            "message" => "User was created successfully."
         ], 200);
     }
 
 
     public function logout(Request $request)
     {
-        $this->validate($request, [
-            "token" => "required"
-        ]);
-
+        // @TODO check if the token is supplied
+        
         try {
             JWTAuth::invalidate($request->token);
 
