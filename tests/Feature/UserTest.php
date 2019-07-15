@@ -16,41 +16,61 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->root = factory("App\User")->states("root")->create([
-            "password" => Hash::make("testpass")
+            "password" => Hash::make("rootpass")
         ]);
-        $this->rootToken = $this->json("POST", route("login"), [
-            "email" => $this->root["email"],
-            "password" => "testpass"
-        ])->baseResponse->original["token"];
 
         $this->admin = factory("App\User")->create([
             "password" => Hash::make("adminpass"),
         ]);
     }
 
-    /** @test */
-    public function non_root_user_cannot_create_new_user()
-    {
-        $response = $this->post(route("register"), [
-            "name" => "test",
-            "email" => "valid@email.com",
-            "password" => "test",
-            "password_confirmation" => "test"
-        ]);
+    protected function authenticate($user) {
+        if ($user->isRoot()) {
+            return $this->json("POST", route("login"), [
+                "email" => $user->email,
+                "password" => "rootpass"
+            ])->baseResponse->original["token"];
 
-        $response->assertJson([
-            "data" => "Unauthorized action."
-        ]);
+        }
+        return $this->json("POST", route("login"), [
+            "email" => $user->email,
+            "password" => "adminpass"
+        ])->baseResponse->original["token"];
+    }
+
+    /** @test */
+    public function admin_user_cannot_create_new_user()
+    {
+        $token = $this->authenticate($this->admin);
+
+        $this
+            ->actingAs($this->admin, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer".$token,
+                "Accept" => "application/json",
+            ])
+            ->json("POST", route("register"), [
+                "name" => "test",
+                "email" => "valid@email.com",
+                "password" => "test",
+                "password_confirmation" => "test"
+            ])
+            ->assertJsonFragment([
+                "data" => "Unauthorized action.",
+            ]);
     }
 
     /** @test */
     public function root_can_create_new_user()
     {
+        $token = $this->authenticate($this->root);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -66,10 +86,12 @@ class UserTest extends TestCase
     /** @test */
     public function username_is_required_on_registration()
     {
+        $token = $this->authenticate($this->root);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -85,10 +107,12 @@ class UserTest extends TestCase
     /** @test */
     public function email_field_is_required_on_registration()
     {
+        $token = $this->authenticate($this->root);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -104,10 +128,12 @@ class UserTest extends TestCase
     /** @test */
     public function password_is_required_on_registration()
     {
+        $token = $this->authenticate($this->root);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -122,10 +148,12 @@ class UserTest extends TestCase
     /** @test */
     public function registration_requires_password_confirmation()
     {
+        $token = $this->authenticate($this->root);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -145,30 +173,29 @@ class UserTest extends TestCase
     public function email_field_is_required_on_login()
     {
         $this
-             ->json("POST", route("login"), [
-                 "password" => "testpass"
-             ])
-             ->assertJsonFragment([
-                 "email" => ["The email field is required."],
-             ]);
+            ->json("POST", route("login"), [
+                "password" => "testpass"
+            ])
+            ->assertJsonFragment([
+                "email" => ["The email field is required."],
+            ]);
     }
 
     /** @test */
     public function password_field_is_required_on_login()
     {
         $this
-             ->json("POST", route("login"), [
-                 "email" => $this->root->email,
-             ])
-             ->assertJsonFragment([
-                 "password" => ["The password field is required."],
-             ]);
+            ->json("POST", route("login"), [
+                "email" => $this->root->email,
+            ])
+            ->assertJsonFragment([
+                "password" => ["The password field is required."],
+            ]);
     }
 
     /** @test */
     public function successfull_login_returns_token()
     {
-        $this->withoutExceptionHandling();
         $response = $this
             ->json("POST", route("login"), [
                 "email" => $this->admin->email,
@@ -183,11 +210,12 @@ class UserTest extends TestCase
     /** @test */
     public function user_is_logged_out_properly()
     {
-        $this->withoutExceptionHandling();
+        $token = $this->authenticate($this->admin);
+
         $this
             ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$this->rootToken,
+                "Authorization" => "Bearer ".$token,
                 "Accept" => "application/json",
             ])
             ->json("GET", route("logout"))
