@@ -16,6 +16,13 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->root = factory("App\User")->states("root")->create([
+            "password" => Hash::make("testpass")
+        ]);
+        $this->rootToken = $this->json("POST", route("login"), [
+            "email" => $this->root["email"],
+            "password" => "testpass"
+        ]);
     }
 
     /** @test */
@@ -35,19 +42,10 @@ class UserTest extends TestCase
     /** @test */
     public function root_can_create_new_user()
     {
-        $user = factory("App\User")->states("root")->create([
-            "password" => Hash::make("testpass")
-        ]);
-
-        $token = $this->json("POST", route("login"), [
-            "email" => $user["email"],
-            "password" => "testpass"
-        ]);
-
         $this
-            ->actingAs($user, "api")
+            ->actingAs($this->root, "api")
             ->withHeaders([
-                "Authorization" => "Bearer ".$token->baseResponse->original["token"],
+                "Authorization" => "Bearer ".$this->rootToken->baseResponse->original["token"],
                 "Accept" => "application/json",
             ])
             ->json("POST", route("register"), [
@@ -56,37 +54,66 @@ class UserTest extends TestCase
                 "password" => "testpassw",
             ])
             ->assertStatus(200);
-        $this->assertDatabaseHas("users", $user->toArray());
+        $this->assertDatabaseHas("users", $this->root->toArray());
     }
 
     /** @test */
-    public function registration_requires_password_and_email()
+    public function username_is_required_on_registration()
     {
-        $user = factory("App\User")->states("root")->create();
-        $this->actingAs($user);
         $this
-            ->post(route("register"), [
-                "email" => "valid@email.com",
-                "password" => "test"
+            ->actingAs($this->root, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer ".$this->rootToken->baseResponse->original["token"],
+                "Accept" => "application/json",
             ])
-            ->assertJson([
-                "name" => ["The name field is required."],
+            ->json("POST", route("register"), [
+                "email" => "validtwo@email.com",
+                "password" => "testingyz"
+            ])
+            ->assertJsonFragment([
+                "name" => [ "The name field is required." ]
+            ]);
+    }
+
+    /** @test */
+    public function email_field_is_required_on_registration()
+    {
+        $this
+            ->actingAs($this->root, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer ".$this->rootToken->baseResponse->original["token"],
+                "Accept" => "application/json",
+            ])
+            ->json("POST", route("register"), [
+                "name" => "userone",
+                "password" => "testingyz"
+            ])
+            ->assertJsonFragment([
+                "email" => [ "The email field is required." ]
+            ]);
+    }
+
+    /** @test */
+    public function password_is_required_on_registration()
+    {
+        $this
+            ->actingAs($this->root, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer ".$this->rootToken->baseResponse->original["token"],
+                "Accept" => "application/json",
+            ])
+            ->json("POST", route("register"), [
+                "name" => "userone",
+                "email" => "justanemail@email.com",
+            ])
+            ->assertJsonFragment([
+                "password" => [ "The password field is required." ]
             ]);
     }
 
     /** @test */
     public function registration_requires_password_confirmation()
     {
-        $this
-            ->json("POST", "api/register", [
-                "name" => "Test",
-                "email" => "test@example.com",
-                "password" => "password",
-            ])
-            ->assertStatus(422)
-            ->assertJson([
-                "password" => ["The password confirmation does not match"]
-            ]);
     }
 
 
