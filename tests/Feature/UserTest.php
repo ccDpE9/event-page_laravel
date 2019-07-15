@@ -32,6 +32,7 @@ class UserTest extends TestCase
             "name" => "test",
             "email" => "valid@email.com",
             "password" => "test"
+            "password_confirmation" => "test"
         ]);
 
         $response->assertJson([
@@ -52,6 +53,7 @@ class UserTest extends TestCase
                 "name" => "testusername",
                 "email" => "valid@email.com",
                 "password" => "testpassw",
+                "password_confirmation" => "testpassw",
             ])
             ->assertStatus(200);
         $this->assertDatabaseHas("users", $this->root->toArray());
@@ -69,6 +71,7 @@ class UserTest extends TestCase
             ->json("POST", route("register"), [
                 "email" => "validtwo@email.com",
                 "password" => "testingyz"
+                "password_confirmation" => "testingyz"
             ])
             ->assertJsonFragment([
                 "name" => [ "The name field is required." ]
@@ -87,6 +90,7 @@ class UserTest extends TestCase
             ->json("POST", route("register"), [
                 "name" => "userone",
                 "password" => "testingyz"
+                "password_confirmation" => "testingyz"
             ])
             ->assertJsonFragment([
                 "email" => [ "The email field is required." ]
@@ -114,6 +118,20 @@ class UserTest extends TestCase
     /** @test */
     public function registration_requires_password_confirmation()
     {
+        $this
+            ->actingAs($this->root, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer ".$this->rootToken->baseResponse->original["token"],
+                "Accept" => "application/json",
+            ])
+            ->json("POST", route("register"), [
+                "name" => "userone",
+                "email" => "justanemail@email.com",
+                "password" => "testypass",
+            ])
+            ->assertJsonFragment([
+                "password" => [ "The password confirmation does not match." ],
+            ]);
     }
 
 
