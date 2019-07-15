@@ -19,12 +19,10 @@ class UserTest extends TestCase
         $this->root = factory("App\User")->states("root")->create([
             "password" => Hash::make("testpass")
         ]);
-        /*
         $this->rootToken = $this->json("POST", route("login"), [
             "email" => $this->root["email"],
             "password" => "testpass"
         ])->baseResponse->original["token"];
-         */
 
         $this->admin = factory("App\User")->create([
             "password" => Hash::make("adminpass"),
@@ -185,42 +183,16 @@ class UserTest extends TestCase
     /** @test */
     public function user_is_logged_out_properly()
     {
-        $user = create("App\User", ["email" => "test@example.com"]);
-        $token = $user->generateToken();
-        $headers = ["Authorization" => "Bearer $token"];
-
+        $this->withoutExceptionHandling();
         $this
-            ->json("GET", "/api/articles", [], $headers)
-            ->assertStatus(200);
-        $this
-            ->json("POST", "/api/logout", [], $headers)
-            ->assertStatus(200);
-
-        $user = User::find($user->id);
-
-        $this->assertEquals(null, $user->api_token);
+            ->actingAs($this->root, "api")
+            ->withHeaders([
+                "Authorization" => "Bearer ".$this->rootToken,
+                "Accept" => "application/json",
+            ])
+            ->json("GET", route("logout"))
+            ->assertJsonFragment([
+                "message" => "User logged out successfully."
+            ]);
     }
-
-    /** @test */
-    public function user_is_logged_out_without_null_token()
-    {
-        $user = create("App\User", ["email" => "test@example.com"]);
-        $token = $user->generateToken();
-        $headers = ["Authorization" => "Bearer $token"];
-
-        // Simulating logout
-        $user->api_token = null;
-        $user->save();
-
-        $this
-            ->json("GET", "/api/articles", [], $headers)
-            ->assertStatus(401);
-    }
-
-    /** @test */
-    public function upcoming_near_concerts_notification()
-    {
-        // https://laravel.com/docs/5.8/mocking#mail-fake
-    }
-
 }
