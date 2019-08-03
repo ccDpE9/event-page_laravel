@@ -4,11 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\Concert;
 
 class ConcertController extends Controller
 {
+    /*
+    public function __constructor()
+    {
+        $this->middleware(
+            "jwt.verify",
+            ["except" => ["index"]]
+        );
+    }
+     */
+
     public function index()
     {
         $concerts = Concert::upcoming()->get();
@@ -20,7 +29,16 @@ class ConcertController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            "title" => ["required"]
+            "title" => ["required"],
+            "description" => ["required"],
+            "date" => ["required"],
+            "start_time" => ["required"],
+            "end_time" => ["required"],
+            "city" => ["required"],
+            "venue" => ["required"],
+            "venue_address" => ["required"],
+            "ticket_price" => ["required"],
+            "tickets_quantity" => ["required"]
         ]);
 
         // - unlike make(), create() saves to the db
@@ -40,7 +58,8 @@ class ConcertController extends Controller
 
     public function update(Request $request, $id)
     {
-        $concert = Concert::find($id)->update($request->all());
+        $concert = Concert::where("id", $id);
+        $concert->update($request->all());
         return response()->json([
             "data" => $concert
         ]);
@@ -51,7 +70,7 @@ class ConcertController extends Controller
         $concert = Concert::find($id);
         $concert->delete();
         return response()->json([
-            "data" => "Concert was successfully deleted."
-        ]);
+            "status" => "Concert was successfully deleted."
+        ], 200);
     }
 }
