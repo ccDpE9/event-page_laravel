@@ -15,24 +15,30 @@ class DeleteConcertTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        //@TODO $concert = factory("App\Concert")->create();
     }
 
     /** @test */
     public function guest_cannot_delete_concerts()
     {
-        $this->withoutExceptionHandling();
         $concert = factory("App\Concert")->create();
         $response = $this->delete(route("concerts.destroy", $concert->id));
         $response
             ->assertStatus(401)
             ->assertJsonFragment(["status" => "You must be authenticated to perform this action."]);
-        $this->assertDatabaseMissing("concerts", $concert->toArray());
+        $this->assertDatabaseHas("concerts", [
+            "title" => $concert->title
+        ]);
     }
 
     /** @test */
     public function authorized_user_can_delete_concerts()
     {
-        // @TODO: assert response contains: "data" => "Was succ deleted."
+        /*
+        $user = factory("App\User")->states("root")->create();
+        $concert = factory("App\Concert")->create();
+        $this->actingAs($user)->delete(route("concerts.destroy", $concert->id));
+         */
     }
 
     // @TODO ? Unit test: Deleting Concert deletes all related ticktes
