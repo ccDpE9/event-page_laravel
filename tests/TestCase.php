@@ -13,8 +13,27 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         // $this->artisan('db:seed --class=RoleTableSeeder');
         
+        // - Set up the root and an admin user to be used accross multiple Unit/Integration tests
+        $this->root = factory("App\User")->states("root")->create();
+        $this->rootToken = $this
+            ->json("POST", route("login"), [
+                "email" => $this->root->email,
+                "password" => "rootpass"
+            ])
+            ->baseResponse
+            ->original["token"];
+
+        $this->admin = factory("App\User")->create();
+        $this->adminToken = $this
+            ->json("POST", route("login"), [
+                "email" => $this->admin->email,
+                "password" => "adminpass"
+            ])
+            ->baseResponse
+            ->original["token"];
+
         // - Argument for assertJsonStructure()
-        $this->responseJsonStructure = [
+        $this->responseConcertJsonStructure = [
             "data" => [
                 "title",
                 "description", 

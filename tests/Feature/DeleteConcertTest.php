@@ -15,40 +15,32 @@ class DeleteConcertTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        //@TODO $concert = factory("App\Concert")->create();
+
+        $this->concert = factory("App\Concert")->create();
+        
     }
 
     /** @test */
     public function guest_cannot_delete_concerts()
     {
-        $concert = factory("App\Concert")->create();
-        $response = $this->delete(route("concerts.destroy", $concert->id));
+        $response = $this->delete(route("concerts.destroy", $this->concert->id));
         $response
             ->assertStatus(401)
             ->assertJsonFragment(["status" => "You must be authenticated to perform this action."]);
         $this->assertDatabaseHas("concerts", [
-            "title" => $concert->title
+            "title" => $this->concert->title
         ]);
     }
 
     /** @test */
     public function authenticated_root_user_can_delete_concerts()
     {
-        $user = factory("App\User")->states("root")->create();
-
-        $token = $this->json("POST", route("login"), [
-            "email" => $user->email,
-            "password" => "rootpass"
-        ])->baseResponse->original["token"];
-
-        $concert = factory("App\Concert")->create();
-
         $this
             ->withHeaders([
-                "Authorization" => "Bearer".$token,
+                "Authorization" => "Bearer".$this->rootToken,
                 "Accept" => "application/json",
             ])
-            ->delete(route("concerts.destroy", $concert->id))
+            ->delete(route("concerts.destroy", $this->concert->id))
             ->assertStatus(200)
             ->assertJsonFragment(["status" => "Concert was successfully deleted."]);
     }
@@ -56,21 +48,12 @@ class DeleteConcertTest extends TestCase
     /** @test */
     public function authenticated_admin_user_can_delete_concerts()
     {
-        $user = factory("App\User")->create();
-
-        $token = $this->json("POST", route("login"), [
-            "email" => $user->email,
-            "password" => "adminpass"
-        ])->baseResponse->original["token"];
-
-        $concert = factory("App\Concert")->create();
-
         $this
             ->withHeaders([
-                "Authorization" => "Bearer".$token,
+                "Authorization" => "Bearer".$this->adminToken,
                 "Accept" => "application/json",
             ])
-            ->delete(route("concerts.destroy", $concert->id))
+            ->delete(route("concerts.destroy", $this->concert->id))
             ->assertStatus(200)
             ->assertJsonFragment(["status" => "Concert was successfully deleted."]);
     }
