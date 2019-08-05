@@ -22,11 +22,6 @@ class UpdateConcertTest extends TestCase
     /** @test */
     public function fillable_fields_can_be_updated()
     {
-        $this
-            ->withHeaders($this->rootToken)
-            ->put(route("concercts.update", $this->concert->id), [
-                "title" => "Just some new title"
-            ]);
     }
 
     /** @test */
@@ -46,5 +41,41 @@ class UpdateConcertTest extends TestCase
         $dbRes = $this->assertDatabaseHas("concerts", [
                 "title" => $this->concert->title
             ]);
+    }
+
+    /** @test */
+    public function authenticated_admin_user_can_update_concerts()
+    {
+        $this
+            ->withHeaders([
+                "Authorization" => "Bearer".$this->adminToken,
+                "Accept" => "application/json",
+            ])
+            ->put(route("concerts.update", $this->concert->id), [
+                "title" => "The end of the fucking world party."
+            ])
+            ->assertStatus(200)
+            ->assertJsonFragment(["status" => "Concert was successfully updated."]);
+        $this->assertDatabaseHas("concerts", [
+            "title" => "The end of the fucking world party."
+        ]);
+    }
+
+    /** @test */
+    public function authenticated_root_user_can_update_concerts()
+    {
+        $this
+            ->withHeaders([
+                "Authorization" => "Bearer".$this->rootToken,
+                "Accept" => "application/json",
+            ])
+            ->put(route("concerts.update", $this->concert->id), [
+                "title" => "The end of the fucking world party."
+            ])
+            ->assertStatus(200)
+            ->assertJsonFragment(["status" => "Concert was successfully updated."]);
+        $this->assertDatabaseHas("concerts", [
+            "title" => "The end of the fucking world party."
+        ]);
     }
 }
