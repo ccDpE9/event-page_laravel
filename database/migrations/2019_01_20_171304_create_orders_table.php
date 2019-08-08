@@ -13,12 +13,15 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('confirmation_number');
-            $table->integer('amount');
-            $table->string('email');
-            $table->string('card_last_four');
+        Schema::create("orders", function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("ticket_id)";
+            //$table->string("confirmation_number");
+            $table->string("charge_id");
+            $table->integer("amount");
+            $table->string("email");
+            // @TODO: contact phone number
+            //$table->string("card_last_four");
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists("orders");
     }
 }
