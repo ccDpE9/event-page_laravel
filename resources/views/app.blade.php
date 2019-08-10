@@ -9,9 +9,6 @@
         <title>Concert</title>
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <!-- Semantic UI -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/semantic.min.css') }}">
-        <script src="{{ asset('js/semantic.min.js') }}"></script>
     </head>
     <body>
         <div class="container"></div>

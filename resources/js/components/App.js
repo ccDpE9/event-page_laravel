@@ -1,19 +1,31 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import {
+  BrowserRouter,
+  Route,
+  Switch
+} from "react-router-dom";
+import Concerts from "./Concerts";
 
-import Header from './Header';
 
 class App extends Component {
   render() {
     return (
+      /*
       <BrowserRouter>
         <div>
-          <Header />
+          <Switch>
+            <Route exact path="/" component={Concerts} />
+          </Switch>
         </div>
       </BrowserRouter>
-    )
+      */
+      <Concerts />
+    );
   }
 }
 
-export default App;
+ReactDOM.render(
+  <App />,
+  document.querySelector(".container")
+);
