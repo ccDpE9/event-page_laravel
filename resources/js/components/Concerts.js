@@ -1,32 +1,48 @@
 import React, { Component } from "react";
 import Concert from "./Concert";
+import { connect } from "react-redux";
+import { fetchConcertsIfNeeded } from "../api/fetchConcerts";
 
-export default class Concerts extends Component {
-  constructor() {
-    super();
+class Concerts extends Component {
 
-    this.state = {
-      concerts: [
-        {
-          title: "Just a concert."
-        }
-      ]
-    }
-  };
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    dispatch(fetchConcertsIfNeeded());
+  }
 
   render() {
-    const { concerts } = this.state;
+    if (this.props.isFetching) {
+      return <div>Loading...</div>
+    }
+
+    if (this.props.concerts) {
+      return (
+        <div className="concerts">
+          <ul className="concert-list">
+            { 
+              this.props.concerts.map(concert => (
+                <li className="concert-list__concert">
+                  <Concert data={concert} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      );
+    }
 
     return (
-      <div className="concerts">
-        <ul className="concert-list">
-          { 
-            this.state.concerts.map(concert => (
-              <Concert data={concert} />
-            ))
-          }
-        </ul>
-      </div>
+      <div>There was an error while loading concerts.</div>
     );
+  }
+};
+
+const mapStateToProps = state => {
+  return {
+    concerts: state.concertsReducer.items,
+    isFetching: state.concertsReducer.isFetching
   };
 };
+
+export default connect(mapStateToProps)(Concerts);
