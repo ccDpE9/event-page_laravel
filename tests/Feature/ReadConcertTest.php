@@ -35,4 +35,17 @@ class ReadConcertTest extends TestCase
             ->json("GET", "/api/concerts")
             ->assertJsonMissing($concert->toArray());
     }
+
+    /** @test */
+    public function index_controller_returns_fields_specified_by_a_resource()
+    {
+        $concert = factory("App\Concert")->create();
+
+        $this->get(route("concerts.index"))->assertJsonFragment([
+            "date" => $concert->date,
+            "city" => $concert->city,
+            "avenue" => $concert->avenue
+        ]);
+
+    }
 }

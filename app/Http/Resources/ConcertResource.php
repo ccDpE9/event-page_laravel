@@ -17,7 +17,7 @@ class ConcertResource extends JsonResource
         return [
             "date" => $this->date,
             "city" => $this->city,
-            "venue" => $this->venue,
+            "avenue" => $this->avenue,
             "tickets_price" => $this->tickets_price,
         ];
     }

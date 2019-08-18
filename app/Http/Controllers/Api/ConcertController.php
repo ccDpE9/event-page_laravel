@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ConcertResource;
 use App\Concert;
 
 class ConcertController extends Controller
@@ -20,7 +21,8 @@ class ConcertController extends Controller
 
     public function index()
     {
-        $concerts = Concert::upcoming()->get();
+        $concerts = ConcertResource::collection(Concert::upcoming()->get());
+
         return response()->json([
             "data" => $concerts
         ]);
@@ -51,6 +53,7 @@ class ConcertController extends Controller
     public function show($id)
     {
         $concert = Concert::where("id", $id)->get();
+
         return response()->json([
             "data" => $concert
         ]);
@@ -60,15 +63,18 @@ class ConcertController extends Controller
     {
         $concert = Concert::where("id", $id);
         $concert->update($request->all());
+
+        // @TODO corret status code
         return response()->json([
-            "data" => $concert
-        ]);
+            "status" => "Concert was successfully updated."
+        ], 200);
     }
 
     public function destroy($id)
     {
         $concert = Concert::find($id);
         $concert->delete();
+
         return response()->json([
             "status" => "Concert was successfully deleted."
         ], 200);
