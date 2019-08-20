@@ -94,5 +94,14 @@ class ConcertTest extends TestCase
     {
         // @TODO: Create update observer
     }
-}
 
+    /** @test */
+    public function tickets_left_returns_not_yet_ordered_tickets()
+    {
+        $concert = factory("App\Concert")->create();
+        $this->assertEquals(
+            $concert->ticketsLeft(),
+            $concert->tickets_quantity
+        );
+    }
+}

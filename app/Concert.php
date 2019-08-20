@@ -3,15 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Concert extends Model
 {
-
     protected $fillable = [
         "title", "description", "date", "start_time", "end_time", "city", "venue", "venue_address", "ticket_price", "tickets_quantity"
     ];
 
+    public function author()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
+
+    // @TODO: Why do i need One to Many Concert-Order relationship?
     public function orders()
     {
         return $this->hasMany(\App\Order::class);
@@ -55,4 +61,8 @@ class Concert extends Model
             ->orderBy("date", "asc");
     }
 
+    public function ticketsLeft()
+    {
+        return $this->tickets()->where("order_id", null)->get()->count();
+    }
 }
