@@ -63,6 +63,6 @@ class Concert extends Model
 
     public function ticketsLeft()
     {
-        return $this->tickets()->where("order_id", null)->get()->count();
+        return $this->tickets()->available();
     }
 }
