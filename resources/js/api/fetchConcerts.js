@@ -1,13 +1,16 @@
+import axios from "axios";
 import {
   requestConcerts,
+  requestConcertsError,
   receiveConcerts
 } from "../actions/index";
 
 const fetchConcerts = concert => dispatch => {
   dispatch(requestConcerts());
-  return fetch("/api/concerts/index")
-    .then(response => response.json())
-    .then(json => dispatch(receiveConcerts(json)));
+  return axios.get("/api/concerts/index")
+    .then(res => res.data)
+    .then(concerts => dispatch(receiveConcerts(concerts)))
+    .catch(err => dispatch(requestConcertsError()));
 }
 
 const shouldFetchConcerts = state => {
