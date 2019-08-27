@@ -10,7 +10,7 @@ const initialState = {
   error: null
 };
 
-const concertsReducer = (
+const concerts = (
   state = initialState,
   action
 ) => {
@@ -39,4 +39,4 @@ const concertsReducer = (
   }
 };
 
-export default concertsReducer;
+export default concerts;

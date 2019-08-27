@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import concertsReducer from "./concerts";
+import concerts from "./concerts";
 
 const rootReducer = combineReducers({
-  concertsReducer,
+  concerts,
 });
 
 export default rootReducer;
