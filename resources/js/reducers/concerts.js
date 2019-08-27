@@ -1,11 +1,12 @@
 import {
   REQUEST_CONCERTS,
+  REQUEST_CONCERTS_ERROR,
   RECEIVE_CONCERTS
 } from "../actions";
 
 const initialState = {
   items: [],
-  isFetching: false,
+  loading: false,
   error: null
 };
 
@@ -17,16 +18,21 @@ const concertsReducer = (
     case REQUEST_CONCERTS:
       return {
         ...state,
-        isFetching: true,
-        didInvalidate: false
+        loading: true,
+        error: false,
+      };
+    case REQUEST_CONCERTS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: true 
       };
     case RECEIVE_CONCERTS:
       return {
         ...state,
-        isFetching: false,
-        didInvalidate: false,
         items: action.concerts,
-        lastUpdated: action.receivedAt
+        loading: false,
+        error: false,
       }
     default:
       return state;

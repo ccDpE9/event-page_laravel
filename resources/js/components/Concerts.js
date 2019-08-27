@@ -3,7 +3,18 @@ import Concert from "./Concert";
 import { connect } from "react-redux";
 import { fetchConcertsIfNeeded } from "../api/fetchConcerts";
 
-class Concerts extends Component {
+const concertListStyle = {
+  maxWidth: "1700px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  fontSize: "16px",
+  letterSpacing: "2px",
+  lineHeight: "1px",
+  textTransform: "uppercase",
+  color: "rgb(193, 191, 190)"
+};
+
+export class Concerts extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -12,23 +23,31 @@ class Concerts extends Component {
   }
 
   render() {
-    if (this.props.isFetching) {
-      return <div>Loading...</div>
+    const {
+      concerts,
+      loading,
+      error
+    } = this.props;
+
+    if (loading) {
+      return <div className="concerts-loading">Loading...</div>
+    }
+
+    if (error) {
+      return <div className="concerts-loading-error">Failed to load upcoming concerts...</div>
     }
 
     if (this.props.concerts) {
       return (
-        <div className="concerts">
-          <ul className="concert-list">
+        <section className="concerts">
+          <div className="concert-list">
             { 
               this.props.concerts.map(concert => (
-                <li className="concert-list__concert">
-                  <Concert data={concert} />
-                </li>
+                <Concert data={concert} />
               ))
             }
-          </ul>
-        </div>
+          </div>
+        </section>
       );
     }
 
@@ -39,9 +58,11 @@ class Concerts extends Component {
 };
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     concerts: state.concertsReducer.items,
-    isFetching: state.concertsReducer.isFetching
+    loading: state.concertsReducer.loading,
+    error: state.concertsReducer.error,
   };
 };
 
