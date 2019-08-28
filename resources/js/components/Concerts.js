@@ -24,23 +24,16 @@ class Concerts extends Component {
       return <div className="concerts-loading-error">Failed to load upcoming concerts...</div>
     }
 
-    // @TODO: fiex this shit
-    if (concerts) {
-      return (
-        <section className="concerts">
-          <div className="concert-list">
-            { 
-              concerts.map(concert => (
-                <Concert data={concert} />
-              ))
-            }
-          </div>
-        </section>
-      );
-    }
-
     return (
-      <p>Console.log</p>
+      <section className="concerts">
+        <div className="concert-list">
+          { 
+            concerts.map(concert => (
+              <Concert data={concert} />
+            ))
+          }
+        </div>
+      </section>
     );
   }
 };
