@@ -7,7 +7,7 @@ import store from "./store";
 import App from "./components/App";
 
 render(
-  <Provider store={store}>
+  <Provider store={ store() }>
     <App /> 
   </Provider>,
   document.querySelector(".container")

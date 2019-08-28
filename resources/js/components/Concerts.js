@@ -3,12 +3,10 @@ import Concert from "./Concert";
 import { connect } from "react-redux";
 import { fetchConcerts } from "../api/fetchConcerts";
 
-export class Concerts extends Component {
+class Concerts extends Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    dispatch(fetchConcerts());
+    this.props.fetchConcerts();
   }
 
   render() {
@@ -26,16 +24,23 @@ export class Concerts extends Component {
       return <div className="concerts-loading-error">Failed to load upcoming concerts...</div>
     }
 
+    // @TODO: fiex this shit
+    if (concerts) {
+      return (
+        <section className="concerts">
+          <div className="concert-list">
+            { 
+              concerts.map(concert => (
+                <Concert data={concert} />
+              ))
+            }
+          </div>
+        </section>
+      );
+    }
+
     return (
-      <section className="concerts">
-        <div className="concert-list">
-          { 
-            concerts.map(concert => (
-              <Concert data={concert} />
-            ))
-          }
-        </div>
-      </section>
+      <p>Console.log</p>
     );
   }
 };
@@ -48,4 +53,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Concerts);
+export default connect(mapStateToProps, {
+  fetchConcerts
+})(Concerts);

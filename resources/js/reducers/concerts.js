@@ -7,7 +7,7 @@ import {
 const initialState = {
   items: [],
   loading: false,
-  error: null
+  error: false,
 };
 
 const concerts = (
