@@ -18,23 +18,13 @@ class StripePaymentGatewayTest extends TestCase
     {
         parent::setUp();
 
-        $this->paymentGateway = new StripePaymentGateway(config("services.stripe.secret"));
-        \Stripe\Stripe::setApiKey(config("services.stripe.secret"));
-        $this->token = \Stripe\Token::create([
-            "card" => [
-                "number" => "4242424242424242",
-                "exp_month" => 1,
-                "exp_year" => date("Y") + 1,
-                "cvc" => "123",
-            ],
-            //["api_key" => config("services.stripe.secret")]
-        ])->id;
+        $this->paymentGateway = app(\App\Billing\PaymentGateway::class);
     }
 
     /** @test */
     public function charge_function_is_a_wrapper_around_stripes_charge_method()
     {
-        $this->paymentGateway->charge(50, $this->token);
+        $this->paymentGateway->charge(50, $this->paymentGateway->testToken());
         $lastCharge = \Stripe\Charge::all(
             ["limit" => 1],
         )["data"][0];
