@@ -12,14 +12,12 @@ class Order extends Model
         $this->hasMany('App\Ticket');
     }
 
-    public function concert()
+    public function total()
     {
-        $this->belongsTo('App\Concert');
-    }
+        return array_reduce($this->total, function($carry, $product) {
+            return $carry + $product->price;
+        });
 
-    public function ticketsQuantity()
-    {
-        // @TODO: ->tickets() vs ->tickets
-        return $this->tickets()->count;
+        $this->save();
     }
 }
