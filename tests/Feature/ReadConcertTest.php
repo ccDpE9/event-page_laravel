@@ -39,13 +39,27 @@ class ReadConcertTest extends TestCase
     /** @test */
     public function index_controller_returns_fields_specified_by_a_resource()
     {
-        $concert = factory("App\Concert")->create();
+        $firstConcert = factory("App\Concert")->create();
+        $secondConcert = factory("App\Concert")->create();
 
-        $this->get(route("concerts.index"))->assertJsonFragment([
-            "date" => $concert->date,
-            "city" => $concert->city,
-            "avenue" => $concert->avenue
+        $response = $this
+            ->get(route("concerts.index"))
+            ->assertStatus(200);
+
+        $response->assertJsonFragment([
+            "date" => $firstConcert->date,
+            "city" => $firstConcert->city,
+            "avenue" => $firstConcert->venue,
+            "tickets_price" => (string)$firstConcert->ticket_price,
+            "tickets_left" => $firstConcert->tickets()->available(),
         ]);
 
+        $response->assertJsonFragment([
+            "date" => $secondConcert->date,
+            "city" => $secondConcert->city,
+            "avenue" => $secondConcert->venue,
+            "tickets_price" => (string)$secondConcert->ticket_price,
+            "tickets_left" => $secondConcert->tickets()->available(),
+        ]);
     }
 }

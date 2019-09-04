@@ -1,0 +1,16 @@
+.container {
+  max-width: 120rem;
+  margin: 8rem auto;
+
+  min-height: 50rem;
+}
+
+.concert-list {
+
+  &__concert {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+}
