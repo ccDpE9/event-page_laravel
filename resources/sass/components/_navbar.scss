@@ -1,0 +1,38 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 50px 10px;
+  margin: 0;
+  top: 0;
+  transition: 0.5s;
+  //  list-style-type: none;
+
+  ul {
+    list-style-type: none;
+    
+    li {
+      display: inline;
+      padding: 5px;
+    }
+  }
+
+  &__socials {
+  }
+
+  &__cart--btn {
+    display: inline-block;
+    background-color: transparent;
+    border-color: #b7b5b4;
+    color: #b7b5b4;
+    border-width: 2px;
+    border-style: solid;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  &--fixed {
+    position: fixed;
+    height: 50px !important;
+  }
+}
