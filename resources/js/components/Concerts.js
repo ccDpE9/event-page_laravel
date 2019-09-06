@@ -38,13 +38,11 @@ class Concerts extends Component {
   }
 };
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     concerts: state.concerts.items,
     loading: state.concerts.loading,
     error: state.concerts.error
-  };
-};
+});
 
 export default connect(mapStateToProps, {
   fetchConcerts
