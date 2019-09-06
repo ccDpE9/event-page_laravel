@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use Illuminate\Support\Str;
+
 use App\Concert;
 use App\Ticket;
 
@@ -19,5 +21,11 @@ class ConcertObserver
         }
 
         return $concert->tickets()->saveMany($tickets);
+    }
+
+    public function saving(Concert $concert)
+    {
+        $slug = Str::slug($concert->title . "-" . $concert->date, "-");
+        $concert->slug = $slug;
     }
 }

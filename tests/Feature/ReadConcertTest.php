@@ -44,22 +44,22 @@ class ReadConcertTest extends TestCase
 
         $response = $this
             ->get(route("concerts.index"))
-            ->assertStatus(200);
-
-        $response->assertJsonFragment([
-            "date" => $firstConcert->date,
-            "city" => $firstConcert->city,
-            "avenue" => $firstConcert->venue,
-            "tickets_price" => (string)$firstConcert->ticket_price,
-            "tickets_left" => $firstConcert->tickets()->available(),
-        ]);
-
-        $response->assertJsonFragment([
-            "date" => $secondConcert->date,
-            "city" => $secondConcert->city,
-            "avenue" => $secondConcert->venue,
-            "tickets_price" => (string)$secondConcert->ticket_price,
-            "tickets_left" => $secondConcert->tickets()->available(),
-        ]);
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                "slug" => $firstConcert->slug,
+                "date" => $firstConcert->date,
+                "city" => $firstConcert->city,
+                "avenue" => $firstConcert->venue,
+                "tickets_price" => (string)$firstConcert->ticket_price,
+                "tickets_left" => $firstConcert->tickets()->available(),
+            ])
+            ->assertJsonFragment([
+                "slug" => $secondConcert->slug,
+                "date" => $secondConcert->date,
+                "city" => $secondConcert->city,
+                "avenue" => $secondConcert->venue,
+                "tickets_price" => (string)$secondConcert->ticket_price,
+                "tickets_left" => $secondConcert->tickets()->available(),
+            ]);
     }
 }

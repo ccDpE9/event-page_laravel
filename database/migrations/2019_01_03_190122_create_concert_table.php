@@ -9,19 +9,20 @@ class CreateConcertTable extends Migration
 
     public function up()
     {
-        Schema::create('concerts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 255);
-            $table->string('description');
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->string('city', 55);
-            $table->string('venue', 55);
-            $table->string('venue_address', 55);
-            $table->string('additional_information', 255);
-            $table->unsignedDecimal('ticket_price', 6, 2);
-            $table->unsignedInteger('tickets_quantity');
+        Schema::create("concerts", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("title", 255);
+            $table->string("description", 255); // This is basically "additional_information field", it gets visible only when user clicks on the concert        
+            $table->date("date"); // date + start_time + end_time
+            $table->string("slug");
+            $table->time("start_time");
+            $table->time("end_time");
+            $table->string("city", 55);
+            $table->string("venue", 55);
+            $table->string("venue_address", 55);
+            $table->unsignedDecimal("ticket_price", 6, 2);
+            $table->unsignedInteger("tickets_quantity");
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ class CreateConcertTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('concerts');
+        Schema::dropIfExists("concerts");
     }
 }
