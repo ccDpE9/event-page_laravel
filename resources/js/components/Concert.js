@@ -1,22 +1,29 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class Concert extends Component {
-  onClick() {
-    retun (
-      // StripeForm
-    )
+import {
+  addTicketToCart,
+} from "../actions/cart";
+
+class Concert extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleAddToCart = this.handleAddToCart.bind(this);
+  }
+
+  handleAddToCart() {
+    let ticket = this.props.data;
+    delete ticket["tickets_left"];
+
+    this.props.addToCart(ticket);
+    console.log(this.props);
   }
 
   renderSoldOutConcert() {
   }
 
   render() {
-    /*
-    if (this.props.data.ticketsLeft === 0) {
-      { renderSoldOutConcert() }
-    }
-    */
-
     return (
       <div className="concert-list__concert">
         <div className="concert-list__concert-date">{ this.props.data.date }</div>
@@ -25,7 +32,8 @@ export default class Concert extends Component {
           <div className="concert-list__concert-avenue">{ this.props.data.avenue }</div>
         </div>
         <button
-          onClick={this.onClick}
+          className="concert-list__concert-btn"
+          onClick={this.handleAddToCart.bind()}
         >
           Order
         </button>
@@ -33,3 +41,12 @@ export default class Concert extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (ticket) => dispatch(addTicketToCart(ticket)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Concert);
