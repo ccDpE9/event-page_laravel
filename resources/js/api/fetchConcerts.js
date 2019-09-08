@@ -12,3 +12,14 @@ export const fetchConcerts = () => dispatch => {
     .then(concerts => dispatch(receiveConcerts(concerts)))
     .catch(err => dispatch(requestConcertsError()));
 }
+
+export const order = products => (dispatch, getState) => {
+  const { cart } = getState();
+
+  dispatch({
+    type: types.CHECKOUT_REQUEST
+  });
+
+  axios.post("/api/order/store");
+
+};
