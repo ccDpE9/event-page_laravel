@@ -10,6 +10,7 @@ const middlewares = [ thunk ];
 
 const store = state => createStore(
   reducer,
+  state,
   applyMiddleware(...middlewares)
 );
 
