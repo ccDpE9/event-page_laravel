@@ -2,47 +2,68 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 
+import {
+  incrementProductQuantity,
+  decrementProductQuantity
+} from "../../actions/cart";
+
+import {
+  IoMdAdd as Add,
+  IoMdRemove as Minus
+} from "react-icons/io";
+
 const CartModalContent = (props) => {
+  /*
+  cart
+    cart__tickets
+      cart__ticket
+    cart__albums
+    cart__merch
+    cart__order
+      cart__order-quantity--up
+      cart__order
+      cart__order-price
+      */
   return ReactDOM.createPortal(
     <aside className="modal-cover">
       <div className="modal">
         <div className="modal__body">
-          {props.cart.products.tickets ? (
-            props.cart.products.tickets.map(ticket => (
-              <div className="products__ticket">
-                <p>Ticket</p>
+          {props.cart.products ? (
+            <div className="cart">
+              { props.cart.products.map(product => (
+                <div className="cart__product">
+                  <span>{ product.title }</span>
+                  <div className="cart__order clearfix">
+                    <span className="cart__order-remove">Remove</span>
+                    <div className="cart__order-quantity">
+                      <span className="cart__order-down">
+                        { product.quantity <= 1 ? (
+                          <Minus />
+                        ) : (
+                          <Minus 
+                            onClick={() => props.decrementQuantity(product)}
+                          />
+                        )}
+                      </span>
+                      <span>{ product.quantity }</span>
+                      <span className="cart__order-up">
+                        <Add 
+                          onClick={() => props.incrementQuantity(product)}
+                        />
+                      </span>
+                      <span className="cart__order-price">{ product.totalPrice }</span>
+                    </div>
+                  </div>
+                  <hr />
+                </div>
+              ))}
+              <div>
+                <span>Subtotal (EUR)</span>
+                <span>{ props.cart.totalPrice }</span>
               </div>
-            ))
-          ) : (
-            <p>No tickets in the cart.</p>
-          )}
-
-          {props.cart.products.albums > 0 ? (
-            props.cart.products.albums.map(album => (
-              <div className="products__album">
-                <p>Album</p>
-              </div>
-            ))
-          ) : (
-            <p>No albums in the cart.</p>
-          )}
-
-          {props.cart.products.merch > 0 ? (
-            props.cart.products.merch.map(merch => (
-              <div className="products__merch">
-                <p>Merch</p>
-              </div>
-            ))
-          ) : (
-            <p>No merch in the cart.</p>
-          )}
-
-          {props.cart.totalPrice > 0 ? (
-            <div className="products__total-price">
-              <p>props.cart.totalPrice</p>
             </div>
           ) : (
-            ""
+            <p>Your cart is currently empty...</p>
           )}
         </div>
         <button 
@@ -67,13 +88,12 @@ const mapStateToProps = state => ({
   cart: state.cart,
 });
 
-const mapDistpachToProps = dispatch => ({
-  addTicket: (slug) => dispatch(addTicketToCart(slug)),
-  removeTicket: (slug) => dispatch(removeTicketFromCart(slug)),
+const mapDispatchToProps = dispatch => ({
+  incrementQuantity: (product) => dispatch(incrementProductQuantity(product)),
+  decrementQuantity: (product) => dispatch(decrementProductQuantity(product)),
 });
 
 export default connect(
   mapStateToProps,
-  //mapDispatchToProps
-  null
+  mapDispatchToProps
 )(CartModalContent);

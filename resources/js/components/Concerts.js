@@ -39,9 +39,9 @@ class Concerts extends Component {
 };
 
 const mapStateToProps = state => ({
-    concerts: state.concerts.items,
-    loading: state.concerts.loading,
-    error: state.concerts.error
+  concerts: state.concerts.items,
+  loading: state.concerts.loading,
+  error: state.concerts.error
 });
 
 export default connect(mapStateToProps, {
