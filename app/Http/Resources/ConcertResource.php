@@ -15,6 +15,7 @@ class ConcertResource extends JsonResource
     public function toArray($request)
     {
         return [
+            "title" => $this->title,
             "slug" => $this->slug,
             "date" => $this->date,
             "city" => $this->city,
