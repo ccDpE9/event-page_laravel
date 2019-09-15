@@ -38,16 +38,13 @@ const cart = (
     case REMOVE_PRODUCT_FROM_CART:
       return {
         ...state,
-        products: [
-          ...state.products,
-          state.products.filter(item => {
-            if (item.slug === action.product.slug) {
-              return false;
-            }
+        products: state.products.filter(item => {
+          if (item.slug === action.product.slug) {
+            return false;
+          }
 
-            return true;
-          })
-        ],
+          return true;
+        }),
         totalPrice: state.totalPrice - action.product.totalPrice
       };
     case INCREMENT_PRODUCT_QUANTITY:
@@ -57,7 +54,8 @@ const cart = (
           if (item.slug === action.product.slug) {
             return {
               ...item,
-              quantity: item.quantity + 1
+              quantity: item.quantity + 1,
+              totalPrice: item.totalPrice + action.product.price
             };
           }
 
@@ -72,7 +70,8 @@ const cart = (
           if (item.slug === action.product.slug) {
             return {
               ...item,
-              quantity: item.quantity - 1
+              quantity: item.quantity - 1,
+              totalPrice: item.totalPrice - action.product.price
             }
           }
 
