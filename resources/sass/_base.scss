@@ -25,3 +25,9 @@ body {
   background-color: $background-color;
   list-style: none;
 }
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}

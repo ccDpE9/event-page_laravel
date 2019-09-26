@@ -9,6 +9,8 @@
         <title>Concert</title>
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <!-- Stripe -->
+        <script src="https://js.stripe.com/v3/"></script>
     </head>
     <body>
         <div class="app"></div>

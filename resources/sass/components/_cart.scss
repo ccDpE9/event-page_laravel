@@ -1,0 +1,56 @@
+// --- Cart
+
+.cart {
+  padding: 5px;
+
+  a {
+    font-size: 13px;
+  }
+
+  a:link {
+    color: $text-color;
+    opacity: 0.2;
+  }
+
+  a:hover {
+    opacity: 1;
+  }
+
+  &__product {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  // @TODO Minus opacity 0.1 | cursor
+
+  &__order {
+    font-size: 18px;
+
+    &-order {
+      float: left;
+    }
+
+    &-quantity {
+      float: right;
+
+      &--down {
+	padding: 0 10px;
+      }
+
+      &--up {
+	padding: 0 10px;
+      }
+
+    }
+
+    &-price {
+      padding: 5px;
+    }
+
+    &-total {
+      float: right;
+    }
+
+  }
+
+}
