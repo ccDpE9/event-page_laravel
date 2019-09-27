@@ -25,7 +25,7 @@ class ConcertObserver
 
     public function saving(Concert $concert)
     {
-        $slug = Str::slug($concert->title . "-" . $concert->date, "-");
+        $slug = Str::slug("concert" . "-" . $concert->title . "-" . $concert->date);
         $concert->slug = $slug;
     }
 }
