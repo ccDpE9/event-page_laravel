@@ -1,41 +1,28 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Concert from "./Concert";
 import { connect } from "react-redux";
 import { fetchConcerts } from "../api/fetchConcerts";
 
-class Concerts extends Component {
+const Concerts = (props) => {
+  useEffect(async () => {
+    await props.fetchConcerts();
+  }, []);
 
-  componentDidMount() {
-    this.props.fetchConcerts();
-  }
+  if (props.loading) return <div className="concets-loading">Loading...</div>
 
-  render() {
-    const {
-      concerts,
-      loading,
-      error
-    } = this.props;
+  if (props.error) return <div className="concert-loading-error">Failed to load upcoming concerts...</div>
 
-    if (loading) {
-      return <div className="concerts-loading">Loading...</div>
-    }
-
-    if (error) {
-      return <div className="concerts-loading-error">Failed to load upcoming concerts...</div>
-    }
-
-    return (
-      <section className="concerts">
-        <div className="concert-list">
-          { 
-            concerts.map(concert => (
-              <Concert data={concert} />
-            ))
-          }
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className="concerts">
+      <div className="concert-list">
+        { 
+          props.concerts.map(concert => (
+            <Concert data={concert} />
+          ))
+        }
+      </div>
+    </section>
+  )
 };
 
 const mapStateToProps = state => ({
