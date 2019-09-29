@@ -4,8 +4,12 @@ import { connect } from "react-redux";
 import { fetchConcerts } from "../api/fetchConcerts";
 
 const Concerts = (props) => {
-  useEffect(async () => {
-    await props.fetchConcerts();
+  useEffect(() => {
+    async function fetchData() {
+      const response = await props.fetchConcerts();
+    }
+
+    fetchData();
   }, []);
 
   if (props.loading) return <div className="concets-loading">Loading...</div>
