@@ -34,6 +34,11 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
+  &__body {
+    position: relative;
+    height: 100%;
+  }
+
   &__btns {
     position: absolute;
     bottom: 0;
@@ -50,10 +55,12 @@
 }
 
 .checkout {
+  position: absolute;
+  height: 100%;
   padding: 50px;
 
   &-form__input {
-    margin: 10px 0;
+    margin: 15px 0;
     border: none;
     border-bottom: 1px solid #af2445;
     background-color: transparent;
