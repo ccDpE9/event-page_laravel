@@ -49,13 +49,62 @@
 
 }
 
-@keyframes slideInDown {
-  from {
-    transform: translate3d(0, -100%, 0);
-    visibility: visible;
+.checkout {
+  padding: 50px;
+
+  &-form__input {
+    margin: 10px 0;
+    border: none;
+    border-bottom: 1px solid #af2445;
+    background-color: transparent;
+    animation: flash 1s;
+
+    &-name {
+      display: block;
+      width: 100%;
+    }
+
+    &-email {
+      display: inline;
+      width: 60%;
+    }
+
+    &-number {
+      display: inline;
+      width: 40%;
+    }
+
+    &-country {
+      display: inline;
+      width: 60%;
+    }
+
+    &-city {
+      display: inline;
+      width: 40%;
+    }
+
+    &-address {
+      display: inline;
+      width: 60%;
+    }
+
+    &-postal {
+      display: inline;
+      width: 40%;
+    }
+  }
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
   }
 
-  to {
-    transform: translate3d(0, 0, 0);
+  25%,
+  75% {
+    opacity: 0;
   }
 }
