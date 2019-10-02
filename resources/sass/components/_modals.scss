@@ -59,6 +59,14 @@
     background-color: transparent;
     animation: flash 1s;
 
+    &--error {
+      border-bottom: 1px solid #cc0000;
+      -webkit-transition: border-bottom 1s;
+      -moz-transition: border-bottom 1s;
+      -o-transition: border-bottom 1s;
+      transition: border-bottom 1s;
+    }
+
     &-name {
       display: block;
       width: 100%;
