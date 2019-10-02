@@ -35,55 +35,69 @@ const CheckoutModalContent = ({ onCheckoutClose, onCheckout }) => {
                   <span>00</span>
                 </div>
                 <div className="checkout-form">
-                  <input text="text" name="name" className="checkout-form__input checkout-form__input-name" placeholder="First and last name" required
+                  <input text="text" name="name" placeholder="First and last name"
+                    className={
+                      errors.name
+                        ? "checkout-form__input checkout-form__input-name checkout-form__input--error"
+                        : "checkout-form__input checkout-form__input-name"
+                    }
                     value={values.name}
                     onChange={handleChange}
                   />
-                  {errors.name && (
-                    <p>{errors.name}</p>
-                  )}
-                  <input type="text" name="email" className="checkout-form__input checkout-form__input-email" placeholder="Email" required
+                  <input type="text" name="email" placeholder="Email" 
+                    className={
+                      errors.email 
+                        ? "checkout-form__input checkout-form__input-email checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-email"
+                    }
                     value={values.email}
                     onChange={handleChange}
                   />
-                  {errors.email && (
-                    <p>{errors.email}</p>
-                  )}
-                  <input type="text" name="number" className="checkout-form__input checkout-form__input-number" placeholder="Phone number" required
+                  <input type="text" name="number" placeholder="Phone number"
+                    className={
+                      errors.number
+                        ? "checkout-form__input checkout-form__input-number checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-number"
+                    }
                     value={values.number}
                     onChange={handleChange}
                   />
-                  {errors.number && (
-                    <p>{errors.number}</p>
-                  )}
-                  <input type="text" name="country" className="checkout-form__input checkout-form__input-country" placeholder="Country" required
+                  <input type="text" name="country" placeholder="Country"
+                    className={
+                      errors.country 
+                        ? "checkout-form__input checkout-form__input-country checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-country"
+                    }
                     value={values.country}
                     onChange={handleChange}
                   />
-                  {errors.country && (
-                    <p>{errors.country}</p>
-                  )}
-                  <input type="text" name="city" className="checkout-form__input checkout-form__input-city" placeholder="City" required
+                  <input type="text" name="city" placeholder="City"
+                    className={
+                      errors.city
+                        ? "checkout-form__input checkout-form__input-city checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-city"
+                    }
                     value={values.city}
                     onChange={handleChange}
                   />
-                  {errors.city && (
-                    <p>{errors.city}</p>
-                  )}
-                  <input type="text" name="address"className="checkout-form__input checkout-form__input-address" placeholder="Street address" required
+                  <input type="text" name="address" placeholder="Street address"
+                    className={
+                      errors.address 
+                        ? "checkout-form__input checkout-form__input-address checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-address"
+                    }
                     value={values.address}
                     onChange={handleChange}
                   />
-                  {errors.address && (
-                    <p>{errors.address}</p>
-                  )}
-                  <input type="text" name="postal" className="checkout-form__input checkout-form__input-postal" placeholder="Postal code" required
+                  <input type="text" name="postal" placeholder="Postal code"
+                    className={
+                      errors.postal 
+                        ? "checkout-form__input checkout-form__input-postal checkout-form__input--error" 
+                        : "checkout-form__input checkout-form__input-postal"
+                    }
                     value={values.postal}
                     onChange={handleChange}
                   />
-                  {errors.postal && (
-                    <p>{errors.postal}</p>
-                  )}
                   <CardElement />
                 </div>
               </div>
