@@ -12,6 +12,17 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
 
+    opacity: 0;
+    -webkit-animation: fade-in ease-in 1;
+    -moz-animation: fade-in ease-in 1;
+    animation: fade-in ease-in 1s;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+
+
     &-date {
       width: 20%;
       text-align: left;
@@ -39,4 +50,52 @@
 
   }
 
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+    top: 100px;
+  }
+
+  75% {
+    opacity: 0.5;
+    top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fade-in {
+  0% {
+    opacity: 0;
+    top: 100px;
+  }
+
+  75% {
+    opacity: 0.5;
+    top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    top: 100px;
+  }
+
+  75% {
+    opacity: 0.5;
+    top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
