@@ -1,34 +1,31 @@
 export default function validate(values) {
   let errors = {};
 
-  if (!values.name) {
-    errors.name = "Name is required.";
-  } else if () {
-  }
+  if (!values.name || !/^[a-z ,.'-]+$/i.test(values.name)) {
+    errors.name = "First and last name are required.";
+  } 
 
-  if (!values.email) {
-    errors.email = "Email address is required"
-  } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+  if (!values.email || !/\S+@\S+\.\S+/.test(values.email)) {
     errors.email = "Email addres is invalid.";
   }
 
-  if (!values.number) {
+  if (!values.number || !/^\d+$/.test(values.number)) {
     errors.number = "Number is required.";
   }
 
-  if (!values.country) {
+  if (!values.country || !/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(values.country)) {
     errors.country = "Country is reqired.";
   }
 
-  if (!values.city) {
+  if (!values.city || !/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(values.city)) {
     errors.city = "City is required";
   }
 
-  if (!values.address) {
+  if (!values.address || /^\d+\s[A-z]+\s[A-z]+/.test(values.address)) {
     errors.address = "Address is required.";
   }
 
-  if (!values.postal) {
+  if (!values.postal || /[A-Za-z][1-9][A-Za-z]\s[1-9][A-Za-z][1-9]/.test(values.postal)) {
     errors.postal = "Postal code is required.";
   }
 
