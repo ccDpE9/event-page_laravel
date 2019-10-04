@@ -12,12 +12,12 @@ const Concert = ( props ) => (
       <div className="concert-list__concert-city">{ props.data.city }</div>
       <div className="concert-list__concert-avenue">{ props.data.avenue }</div>
     </div>
-      <button
+      <a
       className="concert-list__concert-btn"
       onClick={() => props.addToCart(props.data)}
     >
       Order
-    </button>
+    </a>
   </div>
 );
 

@@ -45,7 +45,17 @@
     }
 
     &-btn {
-      width: 20%;
+      width: 10%;
+      padding: 5px 10px;
+      border: 1px solid #af2445;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    &-btn:hover {
+      color: $text-color;
+      background-color: #af2445;
+      transition: background-color 1s;
     }
 
   }
