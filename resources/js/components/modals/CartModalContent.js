@@ -54,8 +54,8 @@ const CartModalContent = (props) => {
           )}
         </div>
         <div className="modal__btns">
-          <button className="modal__btn--close" onClick={props.onCartClose}>Close</button>
-          <button className="modal__btn--checkout" onClick={props.onCheckoutOpen}>Checkout</button>
+          <a className="modal__btn--close" onClick={props.onCartClose}>Close</a>
+          <a className="modal__btn--checkout" onClick={props.onCheckoutOpen}>Checkout</a>
         </div>
       </div>
     </aside>,

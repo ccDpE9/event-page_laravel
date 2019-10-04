@@ -46,12 +46,31 @@
 
   &__btn--close {
     float: left;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #af2445;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+      background-color: #af2445;
+      color: $text-color;
+      transition: background-color 1s;
+    }
   }
 
   &__btn--checkout {
     float: right;
-  }
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #af2445;
 
+    &:hover {
+      background-color: #af2445;
+      color: $text-color;
+      transition: background-color 1s;
+    }
+  }
 }
 
 .checkout {
