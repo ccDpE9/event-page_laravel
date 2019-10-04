@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import {
   StripeProvider,
   Elements,
@@ -104,12 +105,21 @@ const CheckoutModalContent = ({ onCheckoutClose, onCheckout }) => {
             </Elements>
           </StripeProvider>
         </div>
-        <button className="modal__btn--close" onClick={onCheckoutClose}>Close</button>
-        <button className="modal__btn--checkout" onClick={handleSubmit}>Order ticket</button>
+        <div className="modal__btns">
+          <a className="modal__btn--close" onClick={onCheckoutClose}>Close</a>
+          <a className="modal__btn--checkout" onClick={handleSubmit}>Order ticket</a>
+        </div>
       </div>
     </aside>,
     document.body
   );
 }
 
-export default CheckoutModalContent;
+const mapStateToProps = state => ({
+  itemsQuantity: state.cart.products.reduce((acc, val) => acc.quantity + val)
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(CheckoutModalContent);
