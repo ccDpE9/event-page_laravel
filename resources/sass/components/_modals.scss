@@ -82,12 +82,14 @@
     color: $text-color;
     margin: 15px 0;
     border: none;
-    border-bottom: 1px solid #af2445;
+    border-bottom: 1px solid #a988ec;
     background-color: transparent;
     animation: flash 1s;
 
     &:focus {
       outline: none;
+      border-bottom-color: #af2445;
+      transition: border-bottom-color .5s;
     }
 
     &--error {
