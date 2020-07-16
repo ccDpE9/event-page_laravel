@@ -24,7 +24,7 @@
         "fetch-mock": "^7.3.9",
         "jest": "^24.8.0",
         "laravel-mix": "^4.1.2",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "node-fetch": "^2.6.0",
         "popper.js": "^1.15.0",
         "react": "^16.2.0",
